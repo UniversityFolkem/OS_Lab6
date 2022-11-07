@@ -1,0 +1,22 @@
+name: Deploy to server
+
+on:
+  push:
+    branches: [ main ]
+      
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Upload to the server
+        uses: wlixcc/SFTP-Deploy-Action@v1.0
+        with: 
+          username: ${{secrets.EC2_USERNAME}}
+          server: ${{secrets.EC2_SERVER_IP}}
+          ssh_private_key: "${{secrets.EC2_SSH_PRIVATE_KEY}}"
+          local_path: './*'
+          remote_path: '/var/www/html'
